@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 file="SLF_genomic.gff"
 

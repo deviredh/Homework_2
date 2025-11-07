@@ -1,10 +1,16 @@
-#! /bin/bash
+#!/bin/bash
 
 file="SLF_genomic.gff"
 
-grep -v '^#' "$file" | cut -f1 | sort | uniq > chr_list.txt
+cut -f1 "$file" | grep -v '^#' | sort | uniq > chromosome_name.gff
 
-while read Chromosome; do
-	grep -v '^#' "$file" | grep "^$Chromosome" > "${Chromosome}.gff"
-	echo "Wrote ${Chromosome}.gff"
-done < chr_list.txt
+while read chromosome_name
+do
+    chromosome_name=$(echo "$chromosome_name" | tr -d '\r')
+
+    grep '^#' "$file" > "${chromosome_name}.gff"
+    grep -v '^#' "$file" | grep -w "$chromosome_name" >> "${chromosome_name}.gff"
+
+    echo "Wrote ${chromosome_name}.gff"
+
+done < chromosome_name.gff
